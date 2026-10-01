@@ -22,8 +22,6 @@ export async function GET(req:Request){
 }
 export async function POST(req:Request){
   try{await requireManager(); const d=schema.parse(await req.json());
-    const totalAssigned=d.employeeTargets.reduce((s,x)=>s+x.amount,0);
-    if(Math.abs(totalAssigned-d.total)>0.01)return NextResponse.json({error:"Employee target allocation must equal the total target"},{status:409});
     const result=await prisma.$transaction(async tx=>{
       if(d.type==="WARRANTY"){
         const target=await tx.warrantyTarget.upsert({
