@@ -9,7 +9,10 @@ TV-AC · MDA · MOBILE · SDA
 Next.js 15 · React 19 · TypeScript · Prisma · PostgreSQL
 
 ## Environment
-Set DATABASE_URL, ADMIN_PASSWORD and a strong AUTH_SECRET in Vercel/server environment variables.
+Set DATABASE_URL, DIRECT_URL, ADMIN_PASSWORD and a strong AUTH_SECRET in Vercel/server environment variables.
+
+## Live
+https://promoters-performance-system-eta.vercel.app
 
 ## Database
 Run `npx prisma generate`, then `npx prisma db push` for a new database. Seed with `npm run db:seed`.
