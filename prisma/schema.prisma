@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  USER
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum TargetMode {
+  AUTO
+  MANUAL
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  CLOSE_MONTH
+  REOPEN_MONTH
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Department {
+  id             String          @id @default(cuid())
+  code           String          @unique
+  name           String
+  employees      Employee[]
+  monthlyTargets MonthlyTarget[]
+}
+
+model Company {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  employees Employee[]
+}
+
+model Employee {
+  id                    String                   @id @default(cuid())
+  employeeCode          String                   @unique
+  name                  String
+  companyId             String
+  departmentId          String
+  status                EmployeeStatus           @default(ACTIVE)
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+  company               Company                 @relation(fields: [companyId], references: [id])
+  department            Department              @relation(fields: [departmentId], references: [id])
+  targets               EmployeeTarget[]
+  warrantyTargets       EmployeeWarrantyTarget[]
+  agencyTargets         EmployeeAgencyTarget[]
+  invoices              Invoice[]
+}
+
+model MonthlyTarget {
+  id              String           @id @default(cuid())
+  year            Int
+  month           Int
+  departmentId    String
+  amount          Decimal          @db.Decimal(14, 2)
+  department      Department       @relation(fields: [departmentId], references: [id])
+  employeeTargets EmployeeTarget[]
+
+  @@unique([year, month, departmentId])
+}
+
+model EmployeeTarget {
+  id              String        @id @default(cuid())
+  year            Int
+  month           Int
+  employeeId      String
+  monthlyTargetId String
+  mode            TargetMode    @default(AUTO)
+  amount          Decimal       @db.Decimal(14, 2)
+  employee         Employee      @relation(fields: [employeeId], references: [id])
+  monthlyTarget    MonthlyTarget @relation(fields: [monthlyTargetId], references: [id])
+
+  @@unique([year, month, employeeId])
+}
+
+model WarrantyTarget {
+  id              String                    @id @default(cuid())
+  year            Int
+  month           Int
+  amount          Decimal                   @db.Decimal(14, 2)
+  employeeTargets EmployeeWarrantyTarget[]
+
+  @@unique([year, month])
+}
+
+model EmployeeWarrantyTarget {
+  id               String        @id @default(cuid())
+  year             Int
+  month            Int
+  employeeId       String
+  warrantyTargetId String
+  amount           Decimal       @db.Decimal(14, 2)
+  employee         Employee       @relation(fields: [employeeId], references: [id])
+  warrantyTarget   WarrantyTarget @relation(fields: [warrantyTargetId], references: [id])
+
+  @@unique([year, month, employeeId])
+}
+
+model AgencyTarget {
+  id              String                   @id @default(cuid())
+  year             Int
+  month           Int
+  amount          Decimal                  @db.Decimal(14, 2)
+  employeeTargets EmployeeAgencyTarget[]
+
+  @@unique([year, month])
+}
+
+model EmployeeAgencyTarget {
+  id            String       @id @default(cuid())
+  year          Int
+  month         Int
+  employeeId    String
+  agencyTargetId String
+  amount        Decimal      @db.Decimal(14, 2)
+  employee      Employee     @relation(fields: [employeeId], references: [id])
+  agencyTarget  AgencyTarget @relation(fields: [agencyTargetId], references: [id])
+
+  @@unique([year, month, employeeId])
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  invoiceNumber String   @unique
+  date          DateTime
+  employeeId    String
+  amount        Decimal  @db.Decimal(14, 2)
+  warranty      Decimal  @default(0) @db.Decimal(14, 2)
+  agency        Decimal  @default(0) @db.Decimal(14, 2)
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  employee      Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([date])
+  @@index([employeeId, date])
+}
+
+model MonthLock {
+  id        String   @id @default(cuid())
+  year      Int
+  month     Int
+  locked    Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  @@unique([year, month])
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  action    AuditAction
+  entity    String
+  entityId  String?
+  details   Json?
+  createdAt DateTime    @default(now())
+
+  @@index([createdAt])
+}

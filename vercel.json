@@ -1,0 +1,1 @@
+{"framework":"nextjs","buildCommand":"npx prisma generate && next build"}
