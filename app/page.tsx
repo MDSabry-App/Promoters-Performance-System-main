@@ -31,7 +31,7 @@ export default function Home(){
     try{
       const [m,r,s,i]=await Promise.all([fetch(`/api/month?year=${year}&month=${month}`),fetch(`/api/reports?year=${year}&month=${month}`),fetch(`/api/special-targets?year=${year}&month=${month}`),fetch(`/api/invoices?year=${year}&month=${month}`)]);
       const md=await m.json(), rd=await r.json(), sd=await s.json(), id=await i.json();
-      if(md?.employees?.length)setEmployees(md.employees);
+      if(md?.employees?.length)setEmployees(md.employees.map((e:any)=>({...e,company:typeof e.company==="object"&&e.company?e.company.name:e.company})));
       setLocked(!!md?.locked); if(rd?.byEmployee)setReport(rd); if(sd)setSpecial(sd); if(Array.isArray(id))setInvoices(id);
     }catch{setMessage("Unable to load this month.")}finally{setLoading(false)}
   }
