@@ -48,6 +48,7 @@ model Department {
   name           String
   employees      Employee[]
   monthlyTargets MonthlyTarget[]
+  stuff          Stuff[]
 }
 
 model Company {
@@ -160,6 +161,34 @@ model Invoice {
 
   @@index([date])
   @@index([employeeId, date])
+}
+
+model Stuff {
+  id           String     @id @default(cuid())
+  year         Int
+  month        Int
+  name         String
+  company      String
+  departmentId String
+  amount       Decimal    @db.Decimal(14, 2)
+  notes        String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  @@index([year, month])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
 }
 
 model MonthLock {

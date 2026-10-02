@@ -1,5 +1,8 @@
 node_modules
 .next
+out/
+capacitor/android
+android/app/build
 .env
 .env.local
 .vercel
@@ -9,3 +12,4 @@ node_modules
 tsconfig.tsbuildinfo
 tmp_*.ps1
 tmp_*.cjs
+

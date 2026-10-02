@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/auth";
+import { notifyAll } from "@/lib/push";
 
 const schema=z.object({
   year:z.number().int(),
@@ -44,6 +45,7 @@ export async function POST(req:Request){
       await tx.auditLog.create({data:{action:"UPDATE",entity:"AgencyTarget",entityId:target.id,details:{year:d.year,month:d.month,total:d.total}}});
       return tx.agencyTarget.findUnique({where:{id:target.id},include:{employeeTargets:true}});
     });
+    await notifyAll({title:d.type==="WARRANTY"?"BOXI target updated":"Agency target updated",body:`Total ${d.total} for ${d.year}-${d.month}`,tag:"target"});
     return NextResponse.json(result);
   }catch(e){const m=e instanceof Error?e.message:"";if(m==="MONTH_LOCKED")return NextResponse.json({error:"Month is locked"},{status:423});console.error("SPECIAL_TARGET_SAVE_ERROR",e);return NextResponse.json({error:e instanceof Error?e.message:"Unable to save target"},{status:400});}
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireManager } from "@/lib/auth";
+import { notifyAll } from "@/lib/push";
 
 const schema = z.object({
   date: z.string(),
@@ -49,6 +50,7 @@ export async function POST(req: Request) {
       await tx.auditLog.create({ data:{ action:"CREATE", entity:"Invoice", entityId:invoice.id, details:{invoiceNumber:invoice.invoiceNumber} }});
       return invoice;
     });
+    await notifyAll({ title: "New invoice added", body: `${row.invoiceNumber} · ${employee.name} · ${d.amount}`, tag: "invoice" });
     return NextResponse.json(row,{status:201});
   } catch { return NextResponse.json({ error:"Unable to save invoice" },{status:400}); }
 }
@@ -68,6 +70,7 @@ export async function PUT(req: Request) {
       await tx.auditLog.create({data:{action:"UPDATE",entity:"Invoice",entityId:invoice.id,details:{invoiceNumber:invoice.invoiceNumber}}});
       return invoice;
     });
+    await notifyAll({ title: "Invoice updated", body: `${row.invoiceNumber} · ${employee.name} · ${body.amount}`, tag: "invoice" });
     return NextResponse.json(row);
   } catch { return NextResponse.json({error:"Unable to update invoice. Invoice number may already exist."},{status:400}); }
 }
@@ -83,6 +86,7 @@ export async function DELETE(req: Request) {
       await tx.invoice.delete({where:{id}});
       await tx.auditLog.create({data:{action:"DELETE",entity:"Invoice",entityId:id,details:{invoiceNumber:existing.invoiceNumber}}});
     });
+    await notifyAll({ title: "Invoice deleted", body: `${existing.invoiceNumber} was removed`, tag: "invoice" });
     return NextResponse.json({ok:true});
   } catch { return NextResponse.json({error:"Unable to delete invoice"},{status:400}); }
 }
