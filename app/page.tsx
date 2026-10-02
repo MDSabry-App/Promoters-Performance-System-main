@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { BarChart3, Users, Target, ReceiptText, RefreshCw, Plus, Search, LogIn, X, Sun, Moon, Settings2, ShieldCheck, Trophy, TrendingDown, ChevronDown, Package, Check, Bell, TriangleAlert, Download } from "lucide-react";
 import { achievementStatus } from "@/lib/achievement";
-import { usePushNotifications } from "@/components/usePushNotifications";
 
 type Emp = { id:string; name:string; company:string; department:{id:string;code:string;name:string}; status:string };
 type Report = { byEmployee:Array<{employeeId:string;name:string;company:string;department:string;target:number;actual:number;achievement:number;agencyTarget:number;agencyActual:number;agencyAchievement:number;warrantyTarget:number;warrantyActual:number;warrantyAchievement:number}>; totalActual:number; invoiceCount:number; days:number; daily:Array<{date:number;rows:Array<{employeeId:string;actual:number}>}> }; type Special={warranty:any;agency:any}; type Invoice={id:string;invoiceNumber:string;date:string;employeeId:string;amount:number;warranty:number;agency:number;notes?:string|null;employee:{name:string;company:{name:string}}}; type Stuff={id:string;name:string;company:string;department:string;amount:number;notes:string|null};
@@ -64,17 +63,6 @@ export default function Home(){
   const [stuffList,setStuffList]=useState<Stuff[]>([]); const [stuffOpen,setStuffOpen]=useState(false); const [stuffForm,setStuffForm]=useState({name:"",departmentCode:"SDA"}); const [toasts,setToasts]=useState<Toast[]>([]); const [installEvent,setInstallEvent]=useState<any>(null); const [standalone,setStandalone]=useState(false);
   function notify(title:string,body:string,tone:Tone="success"){const id=Date.now()+Math.random();setToasts(t=>[...t.slice(-3),{id,title,body,tone}]);setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)),4500)}
   function dismiss(id:number){setToasts(t=>t.filter(x=>x.id!==id))}
-  const push=usePushNotifications();
-  async function togglePush(){
-    if(push.subscribed){
-      await push.disable();
-      notify("Notifications off","This device will no longer receive push notifications.","info");
-      return;
-    }
-    await push.enable();
-    const granted = push.permission === "granted";
-    notify(granted?"Notifications on":"Notifications blocked", granted ? "This device now receives push notifications." : "Your browser blocked notifications. Allow them in site settings.", granted ? "success" : "error");
-  }
   const [inv,setInv]=useState({invoiceNumber:"",date:now.toISOString().slice(0,10),employeeId:"",amount:"",warranty:"",agency:"",warrantyEnabled:false,agencyEnabled:false,notes:""}); const [invSource,setInvSource]=useState<"PROMOTER"|"STUFF">("PROMOTER"); useEffect(()=>{const x=localStorage.getItem("sps-theme") as "light"|"dark"|null;if(x)setTheme(x)},[]); useEffect(()=>{document.documentElement.dataset.theme=theme;localStorage.setItem("sps-theme",theme)},[theme]); useEffect(()=>{const p=localStorage.getItem("sps-palette");if(p)setPalette(p)},[]); useEffect(()=>{document.documentElement.dataset.palette=palette;localStorage.setItem("sps-palette",palette)},[palette]);
   useEffect(()=>{const onPrompt=(e:any)=>{e.preventDefault();setInstallEvent(e)};const mq=window.matchMedia("(display-mode: standalone)");const sync=()=>setStandalone(mq.matches||(window.navigator as any).standalone===true);sync();window.addEventListener("beforeinstallprompt",onPrompt);mq.addEventListener?.("change",sync);return()=>{window.removeEventListener("beforeinstallprompt",onPrompt);mq.removeEventListener?.("change",sync)}},[]);
   async function installApp(){if(!installEvent)return;installEvent.prompt();try{await installEvent.userChoice}catch{}setInstallEvent(null)}
@@ -128,7 +116,7 @@ export default function Home(){
 
 
   return <main>
-    <header><div><span className="eyebrow">SALES OPERATIONS</span><h1>Promoters Performance <span className="h1-tag">F1</span></h1><p>Fayoum1 Branch</p></div><div className="actions"><select value={palette} onChange={e=>setPalette(e.target.value)} title="Color theme" aria-label="Color theme">{["navy","indigo","emerald","teal","amber","rose","graphite"].map(p=><option key={p} value={p}>{p[0].toUpperCase()+p.slice(1)}</option>)}</select><button className="secondary" onClick={()=>setTheme(theme==="light"?"dark":"light")}>{theme==="light"?<Moon size={16}/>:<Sun size={16}/>} {theme==="light"?"Dark":"Light"} Mode</button>{push.supported&&<button className={"secondary"+(push.subscribed?" push-on":"")} onClick={togglePush} title={push.subscribed?"Disable push notifications":"Enable push notifications"}><Bell size={16}/> {push.subscribed?"Alerts On":"Alerts"}</button>}{!standalone&&installEvent&&<button className="secondary install-btn" onClick={installApp}><Download size={16}/> Install App</button>}<button className="secondary" onClick={()=>manager?setManager(false):setLoginOpen(true)}>{manager?<ShieldCheck size={16}/>:<LogIn size={16}/>} {manager?"Manager Active":"Manager"}</button><button className="primary" onClick={load}><RefreshCw size={17}/> Refresh</button></div></header>
+    <header><div><span className="eyebrow">SALES OPERATIONS</span><h1>Promoters Performance <span className="h1-tag">F1</span></h1><p>Fayoum1 Branch</p></div><div className="actions"><select value={palette} onChange={e=>setPalette(e.target.value)} title="Color theme" aria-label="Color theme">{["navy","indigo","emerald","teal","amber","rose","graphite"].map(p=><option key={p} value={p}>{p[0].toUpperCase()+p.slice(1)}</option>)}</select><button className="secondary" onClick={()=>setTheme(theme==="light"?"dark":"light")}>{theme==="light"?<Moon size={16}/>:<Sun size={16}/>} {theme==="light"?"Dark":"Light"} Mode</button>{!standalone&&installEvent&&<button className="secondary install-btn" onClick={installApp}><Download size={16}/> Install App</button>}<button className="secondary" onClick={()=>manager?setManager(false):setLoginOpen(true)}>{manager?<ShieldCheck size={16}/>:<LogIn size={16}/>} {manager?"Manager Active":"Manager"}</button><button className="primary" onClick={load}><RefreshCw size={17}/> Refresh</button></div></header>
     {message&&<div className="notice">{message}<button onClick={()=>setMessage("")}><X size={15}/></button></div>}
     <section className="toolbar"><select value={year} onChange={e=>setYear(+e.target.value)}>{[2026,2027,2028,2029].map(y=><option key={y}>{y}</option>)}</select><select value={month} onChange={e=>setMonth(+e.target.value)}>{Array.from({length:12},(_,i)=><option key={i+1} value={i+1}>{new Date(2000,i,1).toLocaleString("en",{month:"long"})}</option>)}</select><div className="search"><Search size={17}/><input placeholder="Search promoter or company..." value={q} onChange={e=>setQ(e.target.value)}/></div></section>
     <nav className="tabs">{departments.map(d=><button key={d} className={dept===d?"active":""} onClick={()=>setDept(d)}>{d}</button>)}</nav>

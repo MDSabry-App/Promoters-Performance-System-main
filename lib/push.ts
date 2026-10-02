@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import webpush from "web-push";
 import { prisma } from "@/lib/prisma";
 
@@ -22,37 +23,138 @@ export type PushPayload = {
   url?: string;
 };
 
+// ------------------------------------------------------------------ FCM (native APK)
+
+type ServiceAccount = { project_id: string; client_email: string; private_key: string };
+
+function serviceAccount(): ServiceAccount | null {
+  const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as Partial<ServiceAccount>;
+    if (!parsed.project_id || !parsed.client_email || !parsed.private_key) return null;
+    return { project_id: parsed.project_id, client_email: parsed.client_email, private_key: parsed.private_key };
+  } catch {
+    return null;
+  }
+}
+
+const b64url = (input: Buffer | string) =>
+  Buffer.from(input).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+/** Builds a signed RS256 JWT and exchanges it for an OAuth access token. */
+async function fcmAccessToken(account: ServiceAccount): Promise<string> {
+  const now = Math.floor(Date.now() / 1000);
+  const header = b64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const claims = b64url(
+    JSON.stringify({
+      iss: account.client_email,
+      scope: "https://www.googleapis.com/auth/firebase.messaging",
+      aud: "https://oauth2.googleapis.com/token",
+      iat: now,
+      exp: now + 3600,
+    }),
+  );
+  const signature = crypto
+    .createSign("RSA-SHA256")
+    .update(`${header}.${claims}`)
+    .sign(account.private_key.replace(/\\n/g, "\n"));
+  const assertion = `${header}.${claims}.${b64url(signature)}`;
+
+  const response = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer", assertion }).toString(),
+  });
+  if (!response.ok) throw new Error(`FCM_AUTH_${response.status}`);
+  const data = (await response.json()) as { access_token?: string };
+  if (!data.access_token) throw new Error("FCM_AUTH_NO_TOKEN");
+  return data.access_token;
+}
+
+async function sendFcm(token: string, payload: PushPayload, accessToken: string) {
+  const response = await fetch(`https://fcm.googleapis.com/v1/projects/${serviceAccount()!.project_id}/messages:send`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${accessToken}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      message: {
+        token,
+        notification: { title: payload.title, body: payload.body },
+        data: { tag: payload.tag || "sps", url: payload.url || "/" },
+        android: { priority: "high", notification: { channel_id: "sps-updates", tag: payload.tag || "sps" } },
+      },
+    }),
+  });
+  if (!response.ok) throw new Error(`FCM_SEND_${response.status}`);
+}
+
 /**
  * Sends a push notification to every registered device.
  * Never throws: a notification failure must not break the action that triggered it.
  */
 export async function notifyAll(payload: PushPayload) {
-  if (!pushReady()) return { sent: 0, skipped: true };
+  let sent = 0;
+  let skipped = false;
+
   try {
     const subs = await prisma.pushSubscription.findMany();
-    if (!subs.length) return { sent: 0, skipped: false };
 
-    const body = JSON.stringify(payload);
-    const results = await Promise.allSettled(
-      subs.map((sub) =>
-        webpush.sendNotification(
-          { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
-          body,
-        ),
-      ),
-    );
+    // Native devices registered through Capacitor carry an FCM token, not a web-push key.
+    const native = subs.filter((s) => s.token || s.endpoint.startsWith("fcm:"));
+    const web = subs.filter((s) => !s.token && !s.endpoint.startsWith("fcm:"));
 
-    // Drop subscriptions the browser has invalidated (404/410).
-    const dead = results
-      .map((r, i) => ({ r, s: subs[i] }))
-      .filter(({ r }) => r.status === "rejected" && [404, 410].includes((r.reason as { statusCode?: number })?.statusCode || 0))
-      .map(({ s }) => s.endpoint);
+    if (web.length) {
+      if (!pushReady()) {
+        skipped = true;
+      } else {
+        const body = JSON.stringify(payload);
+        const results = await Promise.allSettled(
+          web.map((sub) =>
+            webpush.sendNotification({ endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } }, body),
+          ),
+        );
 
-    if (dead.length) {
-      await prisma.pushSubscription.deleteMany({ where: { endpoint: { in: dead } } }).catch(() => {});
+        // Drop only web subscriptions the browser has invalidated (404/410).
+        const dead = results
+          .map((r, i) => ({ r, s: web[i] }))
+          .filter(({ r }) => r.status === "rejected" && [404, 410].includes((r.reason as { statusCode?: number })?.statusCode || 0))
+          .map(({ s }) => s.endpoint);
+
+        if (dead.length) {
+          await prisma.pushSubscription.deleteMany({ where: { endpoint: { in: dead } } }).catch(() => {});
+        }
+        sent += results.filter((r) => r.status === "fulfilled").length;
+      }
     }
 
-    return { sent: results.filter((r) => r.status === "fulfilled").length, skipped: false };
+    if (native.length) {
+      const account = serviceAccount();
+      if (account) {
+        try {
+          const accessToken = await fcmAccessToken(account);
+          const tokens = native.map((s) => s.token || s.endpoint.replace(/^fcm:/, ""));
+          const results = await Promise.allSettled(tokens.map((t) => sendFcm(t, payload, accessToken)));
+
+          // UNREGISTERED / INVALID_ARGUMENT mean the token is gone for good.
+          const deadIndexes = results
+            .map((r, i) => ({ r, i }))
+            .filter(({ r }) => r.status === "rejected" && /FCM_SEND_(400|404)/.test((r.reason as Error)?.message || ""))
+            .map(({ i }) => tokens[i]);
+
+          if (deadIndexes.length) {
+            await prisma.pushSubscription.deleteMany({ where: { token: { in: deadIndexes } } }).catch(() => {});
+          }
+          sent += results.filter((r) => r.status === "fulfilled").length;
+        } catch (e) {
+          console.error("PUSH_FCM_ERROR", e);
+        }
+      } else {
+        skipped = true;
+      }
+    }
+
+    if (!subs.length) return { sent: 0, skipped: false };
+    return { sent, skipped };
   } catch (e) {
     console.error("PUSH_SEND_ERROR", e);
     return { sent: 0, skipped: true };
