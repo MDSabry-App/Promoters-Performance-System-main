@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       await tx.auditLog.create({ data:{ action:"CREATE", entity:"Invoice", entityId:invoice.id, details:{invoiceNumber:invoice.invoiceNumber} }});
       return invoice;
     });
-    await notifyAll({ title: "New invoice added", body: `${row.invoiceNumber} · ${employee.name} · ${d.amount}`, tag: "invoice" });
+    await notifyAll({ title: "فاتورة جديدة", body: `${row.invoiceNumber} · ${employee.name} · ${d.amount}`, tag: "invoice" });
     return NextResponse.json(row,{status:201});
   } catch { return NextResponse.json({ error:"Unable to save invoice" },{status:400}); }
 }
@@ -70,7 +70,7 @@ export async function PUT(req: Request) {
       await tx.auditLog.create({data:{action:"UPDATE",entity:"Invoice",entityId:invoice.id,details:{invoiceNumber:invoice.invoiceNumber}}});
       return invoice;
     });
-    await notifyAll({ title: "Invoice updated", body: `${row.invoiceNumber} · ${employee.name} · ${body.amount}`, tag: "invoice" });
+    await notifyAll({ title: "تم تحديث فاتورة", body: `${row.invoiceNumber} · ${employee.name} · ${body.amount}`, tag: "invoice", level: "important" });
     return NextResponse.json(row);
   } catch { return NextResponse.json({error:"Unable to update invoice. Invoice number may already exist."},{status:400}); }
 }
@@ -86,7 +86,7 @@ export async function DELETE(req: Request) {
       await tx.invoice.delete({where:{id}});
       await tx.auditLog.create({data:{action:"DELETE",entity:"Invoice",entityId:id,details:{invoiceNumber:existing.invoiceNumber}}});
     });
-    await notifyAll({ title: "Invoice deleted", body: `${existing.invoiceNumber} was removed`, tag: "invoice" });
+    await notifyAll({ title: "تم حذف فاتورة", body: `تم حذف ${existing.invoiceNumber}`, tag: "invoice", level: "critical" });
     return NextResponse.json({ok:true});
   } catch { return NextResponse.json({error:"Unable to delete invoice"},{status:400}); }
 }

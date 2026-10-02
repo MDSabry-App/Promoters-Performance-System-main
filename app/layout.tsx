@@ -3,6 +3,7 @@ import "./globals.css";
 import ServiceWorker from "@/components/ServiceWorker";
 import CapacitorPush from "@/components/CapacitorPush";
 import AutoPush from "@/components/AutoPush";
+import ChangeNotifier from "@/components/ChangeNotifier";
 
 export const metadata: Metadata = {
   title: "Promoters Performance System",
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ServiceWorker />
         <CapacitorPush />
         <AutoPush />
+        <ChangeNotifier />
       </body>
     </html>
   );

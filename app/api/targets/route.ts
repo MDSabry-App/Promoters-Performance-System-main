@@ -117,11 +117,7 @@ export async function POST(req: Request) {
     });
 
     const manualCount = (data.employeeTargets || []).filter((item) => item.amount > 0).length;
-    await notifyAll({
-      title: "Target updated",
-      body: `${result?.department?.code || ""} · ${data.amount}${manualCount ? ` · ${manualCount} manual` : " · split equally"}`,
-      tag: "target",
-    });
+    await notifyAll({ title: "تم تحديث الهدف", body: `${result?.department?.code || ""} · ${data.amount}${manualCount ? ` · ${manualCount} يدوي` : " · توزيع متساوٍ"}`, tag: "target", level: "important" });
 
     return NextResponse.json(result);
   } catch (e) {

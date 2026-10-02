@@ -1,6 +1,6 @@
 {
   "name": "promoters-performance-system",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "db:seed": "tsx prisma/seed.ts",
-    "postinstall": "prisma generate"
+    "check:setup": "node scripts/check-setup.mjs",
+    "postinstall": "prisma generate",
+    "cap:sync": "npx cap sync android",
+    "build:apk": "npx cap sync android && cd android && gradlew.bat assembleDebug",
+    "build:release": "npm run build && npx cap sync android && cd android && gradlew.bat assembleRelease && cd .. && copy /Y android\\app\\build\\outputs\\apk\\release\\app-release.apk SPS-F1-release.apk",
+    "build:mobile": "npm run build:apk"
   },
   "dependencies": {
     "@capacitor/android": "^7.6.9",

@@ -31,8 +31,11 @@ npm run dev                       # http://localhost:3000
 | `app/api/targets/route.ts` | Department targets, manual per-promoter overrides, excludes placeholders |
 | `lib/push.ts` | web-push helper (`notifyAll`) wired into every server action |
 | `components/ServiceWorker.tsx` | Registers `/sw.js` + rewrites `/api/*` to `NEXT_PUBLIC_API_BASE` when set |
+| `components/ChangeNotifier.tsx` | Change-feed notifier: polls `/api/changes`, raises real system notifications (APK + browser) |
 | `components/usePushNotifications.ts` | Browser/PWA subscribe / unsubscribe hook |
 | `components/CapacitorPush.tsx` | FCM registration inside the APK (needs google-services.json) |
+| `lib/changes.ts` | Maps an `AuditLog` row to a display-ready change event (Arabic copy + urgency) |
+| `app/api/changes/route.ts` | Cursor-based change feed (`?since=`) feeding the notifier |
 | `public/sw.js` | Offline cache (app shell) + push / notificationclick handlers |
 | `public/icons/*` `public/logos/stuff-b-tech.png` | App icons and the Stuff B.TECH logo |
 | `capacitor.config.ts` | Android shell config (`com.fayoum1.sps` → `https://…` live site) |
@@ -67,26 +70,55 @@ npm run dev                       # http://localhost:3000
 
 ## Push notifications
 
-There are two paths, and you get the one that matches where the user is:
+There are **two independent layers**. Together they give you a notification for
+**every change made from the website or the app**:
 
-### 1. Web Push (PWA / mobile browser)  ✅ works now
+### 1. Change feed notifier ✅ works now, no setup
+Every write already lands in the `AuditLog` table, so the system is fully
+automatic — nothing to configure.
+
+| Piece | Role |
+|-------|------|
+| `lib/changes.ts` | Turns an `AuditLog` row into a ready-to-display event (Arabic title/body, kind, urgency level) |
+| `app/api/changes/route.ts` | Cursor-based feed: `GET /api/changes?since=<iso>` returns only what is new |
+| `components/ChangeNotifier.tsx` | Polls every 10 s, raises a real system notification per new event, clears the app badge |
+
+Notifications are raised the right way on each platform:
+- **APK (Android)** — `@capacitor/local-notifications`, with three channels so the
+  user can tune them: `sps-critical` (deletes / month close), `sps-important`
+  (targets), `sps-updates` (invoices, promoters, Stuff).
+- **Browser / PWA** — Service Worker notification with icon, badge, vibration and
+  a “فتح” action.
+
+It also re-checks the moment the app returns to the foreground, and on a fresh
+install the recent history is marked as seen instead of replayed as a flood.
+
+> Works while the app is open or backgrounded. For a push that arrives even when
+> the app is fully closed, enable FCM below.
+
+### 2. Web Push (VAPID) ✅ works now
 - The deployed HTTPS site registers a service worker + VAPID subscription.
-- Every server action (new invoice, target update, Stuff add/delete, etc.) calls `notifyAll` and pushes a notification to every subscribed browser device — including mobile **when the site is added to the Home Screen**.
-- An **Alerts** button appears in the header when supported: tap it to subscribe / unsubscribe.
-- Requires VAPID env vars (already generated): `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`.
+- Every server action calls `notifyAll`, pushing to every subscribed browser device.
+- Requires `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`.
 
-### 2. Push inside the APK (FCM)  🔧 setup required
-The Capacitor `@capacitor/push-notifications` plugin is installed and wired
-(`components/CapacitorPush.tsx`), but the APK can only receive push from **Firebase Cloud Messaging**, not from the Web Push API that the system WebView lacks. To enable it:
+### 3. FCM inside the APK — delivers with the app fully closed 🔧 one-time setup
+An Android WebView has no Web Push API, so true background delivery needs
+**Firebase Cloud Messaging**. The client (`components/CapacitorPush.tsx`), the
+server sender (`lib/push.ts`) and the Gradle wiring are all ready — only two
+secrets are missing:
 
-1. Create a **Firebase project** and register the Android app:
-   - package name: `com.fayoum1.sps`
-   - download `google-services.json` → drop it at `android/app/google-services.json`
-2. Add Firebase Admin to the server (`npm i firebase-admin`) and, in `lib/push.ts`,
-   forward FCM `token` subscriptions through the FCM HTTP v1 API using your service-account key.
-3. Rebuild the APK: `npm run build:mobile` (see below).
+1. **Firebase project**
+   - Add an Android app with package name `com.fayoum1.sps`
+   - Download `google-services.json` → place it at `android/app/google-services.json`
+     (a template lives at `android/app/google-services.json.example`)
+2. **Server key**
+   - Firebase Console → Project settings → Service accounts → Generate new private key
+   - Paste the whole JSON into `FIREBASE_SERVICE_ACCOUNT` (see `.env.example`)
 
-Until step 1 the APK still runs fine — it just won't show remote push; local in-app toasts still fire for every action.
+3. Rebuild: `npm run build:release`
+
+Once both are in place the FCM branch of `notifyAll` switches on by itself, using
+the same channels and urgency levels as the change feed.
 
 ---
 
@@ -94,13 +126,14 @@ Until step 1 the APK still runs fine — it just won't show remote push; local i
 
 ```bash
 npm install
-npx cap sync android          # copies the latest web assets into the Android project
-cd android && .\gradlew.bat assembleDebug   # produces app/build/outputs/apk/debug/app-debug.apk
+npx cap sync android                      # copies the latest web assets into the Android project
+cd android && .\gradlew.bat assembleDebug # debug APK
 ```
 
 Or from the repo root:
 ```bash
-npm run build:mobile          # runs `next build` then `cap sync android`, then `./gradlew assembleDebug`
+npm run build:apk          # debug APK
+npm run build:release      # signed release APK → ./SPS-F1-release.apk
 ```
 
 Install on a phone (developer options / USB debugging):
@@ -108,12 +141,16 @@ Install on a phone (developer options / USB debugging):
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-A prebuilt debug APK is shipped at the repo root as **`SPS-F1.apk`**.
+A **signed release** APK is shipped at the repo root as **`SPS-F1-release.apk`**
+(cert `CN=SPS F1, O=Fayoum1`). Release signing reads `android/app/keystore.properties`.
 
 ### Build notes
 - The APK loads the **live** site configured in `capacitor.config.ts` (`server.url`).
   Update that URL with `CAPACITOR_SERVER_URL=…` before rebuilding if your domain changes.
-- `compileSdkVersion = 35`, requires the `android-35` SDK platform.
+- `compileSdkVersion = 35`, `minSdkVersion = 23`, `targetSdkVersion = 34`.
+- `POST_NOTIFICATIONS` is declared, so Android 13+ prompts the user on first launch.
+- Notification channels (`sps-critical`, `sps-important`, `sps-updates`) are created at runtime.
+- The web layer must be **deployed** for the APK to work — the shell only points at the live URL.
 
 ---
 
@@ -136,3 +173,9 @@ NEXT_PUBLIC_API_BASE=      # only set for a static-export build that calls a rem
 - `npx tsc --noEmit` — type-checks.
 - `npm run build` — production web build.
 - `npm run build:mobile` — full Android APK (debug).
+- `npm run build:release` — signed release APK → `SPS-F1-release.apk`.
+- `npm run check:setup` — reports which notification paths are live and what is missing.
+
+### Live diagnostics after deploy
+- `GET /api/push?status=1` — per-path status (Web Push / FCM / change feed) with device counts.
+- `GET /api/changes?since=<iso>` — the change feed the notifier consumes.

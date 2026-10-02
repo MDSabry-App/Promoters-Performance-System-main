@@ -7,6 +7,7 @@ import { LocalNotifications } from "@capacitor/local-notifications";
 const PUSH_KEY = "sps-push-enabled";
 const POLL_MS = 45_000;
 const SNAPSHOT_KEY = "sps-change-snapshot";
+const CHANNEL_ID = "sps-updates";
 
 function urlBase64ToUint8Array(base64: string) {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -19,6 +20,7 @@ function urlBase64ToUint8Array(base64: string) {
 
 /** Subscribes the device to server push without any user-facing control. */
 async function autoSubscribe() {
+  if (Capacitor.isNativePlatform()) return;
   if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) return;
 
   let permission = Notification.permission;
@@ -83,7 +85,15 @@ async function ensureChannel() {
     /* older Android grants the permission implicitly */
   }
   try {
-    await LocalNotifications.createChannel({ id: "sps-updates", name: "Sales updates", importance: 5, visibility: 1 });
+    await LocalNotifications.createChannel({
+      id: CHANNEL_ID,
+      name: "تحديثات المبيعات",
+      description: "إشعارات الفواتير والأهداف والتعديلات",
+      importance: 5,
+      visibility: 1,
+      sound: "default",
+      vibration: true,
+    });
   } catch {
     /* channel already exists or unsupported */
   }
@@ -93,7 +103,17 @@ async function showLocal(title: string, body: string) {
   if (Capacitor.isNativePlatform()) {
     try {
       await LocalNotifications.schedule({
-        notifications: [{ id: Math.floor(Date.now() % 2_000_000_000), title, body, smallIcon: "ic_stat_icon", ongoing: false }],
+        notifications: [
+          {
+            id: Math.floor(Date.now() % 2_000_000_000),
+            title,
+            body,
+            channelId: CHANNEL_ID,
+            smallIcon: "ic_stat_icon",
+            sound: "default",
+            ongoing: false,
+          },
+        ],
       });
       return;
     } catch {
@@ -108,8 +128,9 @@ async function showLocal(title: string, body: string) {
         tag: "sps-change",
         icon: "/icons/icon-192.png",
         badge: "/icons/icon-192.png",
+        vibrate: [90, 40, 90],
         data: { url: "/" },
-      });
+      } as NotificationOptions);
       return;
     }
     if (typeof Notification !== "undefined" && Notification.permission === "granted") {
@@ -124,9 +145,8 @@ async function showLocal(title: string, body: string) {
  * Zero-configuration notifications.
  *
  * Every mutation already calls notifyAll() on the server, so registered devices get a
- * real push. This component removes the need for an "Alerts" button by subscribing on
- * load, and additionally polls the month report so a change made anywhere (another
- * device, another browser, the site itself) still raises a notification locally.
+ * real push. This component also polls the month report so a change made anywhere still
+ * raises a local notification (fallback when FCM is not configured yet).
  */
 export default function AutoPush() {
   useEffect(() => {
@@ -144,13 +164,19 @@ export default function AutoPush() {
         const now = new Date();
         const year = now.getFullYear();
         const month = now.getMonth() + 1;
-        const response = await fetch(`/api/reports?year=${year}&month=${month}`, { cache: "no-store", signal: controller.signal });
+        const response = await fetch(`/api/reports?year=${year}&month=${month}`, {
+          cache: "no-store",
+          signal: controller.signal,
+        });
         if (!response.ok) return;
         const data = await response.json();
         const next = fingerprint(data);
         if (baseline !== null && next !== baseline) {
           const count = Number(data.invoiceCount) || 0;
-          await showLocal("Sales data updated", count === 1 ? "A new invoice was recorded." : `${count} invoices recorded this month.`);
+          await showLocal(
+            "تحديث بيانات المبيعات",
+            count === 1 ? "تم تسجيل فاتورة جديدة." : `تم تسجيل ${count} فاتورة هذا الشهر.`,
+          );
         }
         baseline = next;
         try {

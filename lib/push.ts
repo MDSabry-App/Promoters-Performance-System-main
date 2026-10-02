@@ -21,7 +21,16 @@ export type PushPayload = {
   body: string;
   tag?: string;
   url?: string;
+  /** Drives the Android channel + FCM priority. Defaults to "normal". */
+  level?: "normal" | "important" | "critical";
 };
+
+/** FCM channel per urgency — must match the channels created in ChangeNotifier. */
+function fcmChannel(level: PushPayload["level"]) {
+  if (level === "critical") return { id: "sps-critical", priority: "high" as const };
+  if (level === "important") return { id: "sps-important", priority: "high" as const };
+  return { id: "sps-updates", priority: "normal" as const };
+}
 
 // ------------------------------------------------------------------ FCM (native APK)
 
@@ -73,6 +82,7 @@ async function fcmAccessToken(account: ServiceAccount): Promise<string> {
 }
 
 async function sendFcm(token: string, payload: PushPayload, accessToken: string) {
+  const channel = fcmChannel(payload.level);
   const response = await fetch(`https://fcm.googleapis.com/v1/projects/${serviceAccount()!.project_id}/messages:send`, {
     method: "POST",
     headers: { authorization: `Bearer ${accessToken}`, "content-type": "application/json" },
@@ -80,8 +90,21 @@ async function sendFcm(token: string, payload: PushPayload, accessToken: string)
       message: {
         token,
         notification: { title: payload.title, body: payload.body },
-        data: { tag: payload.tag || "sps", url: payload.url || "/" },
-        android: { priority: "high", notification: { channel_id: "sps-updates", tag: payload.tag || "sps" } },
+        data: {
+          tag: payload.tag || "sps",
+          url: payload.url || "/",
+          level: payload.level || "normal",
+        },
+        android: {
+          priority: channel.priority,
+          notification: {
+            channel_id: channel.id,
+            tag: payload.tag || "sps",
+            // Critical updates (deletions) keep the notification on screen.
+            default_vibrate_timings: false,
+            notification_priority: payload.level === "critical" ? "PRIORITY_MAX" : "PRIORITY_DEFAULT",
+          },
+        },
       },
     }),
   });

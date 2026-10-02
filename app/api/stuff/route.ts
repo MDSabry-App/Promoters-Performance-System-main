@@ -72,7 +72,7 @@ export async function POST(req: Request) {
       },
     });
 
-    await notifyAll({ title: "Stuff added", body: `${data.name} · ${department.code}`, tag: "stuff" });
+    await notifyAll({ title: "تمت إضافة Stuff", body: `${data.name} · ${department.code}`, tag: "stuff", level: "important" });
 
     return NextResponse.json({ ...created, department: created.department.code, amount: Number(created.amount) }, { status: 201 });
   } catch (e) {
@@ -98,7 +98,7 @@ export async function DELETE(req: Request) {
       data: { action: "DELETE", entity: "Stuff", entityId: id, details: { name: existing.name, departmentId: existing.departmentId, amount: Number(existing.amount) } },
     });
 
-    await notifyAll({ title: "Stuff deleted", body: existing.name, tag: "stuff" });
+    await notifyAll({ title: "تم حذف Stuff", body: existing.name, tag: "stuff", level: "critical" });
 
     return NextResponse.json({ ok: true, id });
   } catch (e) {
