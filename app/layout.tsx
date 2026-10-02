@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import ServiceWorker from "@/components/ServiceWorker";
+import CapacitorPush from "@/components/CapacitorPush";
 
 export const metadata: Metadata = {
   title: "Promoters Performance System",
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <ServiceWorker />
+        <CapacitorPush />
       </body>
     </html>
   );
