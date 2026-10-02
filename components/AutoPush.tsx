@@ -73,9 +73,15 @@ function fingerprint(data: {
   ]);
 }
 
-/** Creates the Android notification channel once so alerts are never silently dropped. */
+/** Asks for the Android 13+ runtime permission and creates the notification channel. */
 async function ensureChannel() {
   if (!Capacitor.isNativePlatform()) return;
+  try {
+    const current = await LocalNotifications.checkPermissions();
+    if (current.display !== "granted") await LocalNotifications.requestPermissions();
+  } catch {
+    /* older Android grants the permission implicitly */
+  }
   try {
     await LocalNotifications.createChannel({ id: "sps-updates", name: "Sales updates", importance: 5, visibility: 1 });
   } catch {

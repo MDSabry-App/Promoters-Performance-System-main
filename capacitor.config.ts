@@ -8,11 +8,15 @@ const liveUrl = process.env.CAPACITOR_SERVER_URL || "https://promoters-performan
 const config: CapacitorConfig = {
   appId: "com.fayoum1.sps",
   appName: "SPS F1",
-  webDir: "out",
+  // The dashboard needs a live server (API routes + database), so a static export is not
+  // possible. `offline/` only holds the page shown when server.url cannot be reached.
+  webDir: "offline",
   server: {
     url: liveUrl,
     cleartext: false,
     androidScheme: "https",
+    // Shown instead of a blank WebView when the site is unreachable.
+    errorPath: "index.html",
   },
   android: {
     allowMixedContent: false,
