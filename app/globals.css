@@ -95,9 +95,8 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 /* Colour theme: keeps the original select's look and height, but each option shows
    the colour itself. A native <select> cannot render a swatch, hence the dropdown. */
 .palette-select{position:relative}
-.palette-trigger{height:42px;min-width:132px;display:flex;align-items:center;gap:9px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;padding:0 11px;font:inherit;font-weight:700;cursor:pointer}
+.palette-trigger{height:42px;padding:0 9px;display:flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;cursor:pointer}
 .palette-trigger:hover{border-color:var(--accent)}
-.palette-trigger-label{flex:1;text-align:left}
 .palette-caret{color:var(--muted);transition:transform .15s}
 .palette-caret.open{transform:rotate(180deg)}
 .swatch-dot{width:17px;height:17px;border-radius:50%;flex:0 0 auto;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
@@ -105,6 +104,11 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 .palette-option{display:flex;align-items:center;gap:9px;border:0;background:transparent;color:var(--text);font:inherit;font-size:14px;font-weight:650;text-align:left;padding:9px 10px;border-radius:8px;cursor:pointer;white-space:nowrap}
 .palette-option:hover{background:var(--soft)}
 .palette-option.active{background:var(--soft);color:var(--accent);font-weight:800}
+/* Header buttons trimmed down to save width: an icon-only theme toggle and a smaller
+   Refresh. Both keep an accessible name through title/aria-label. The class is
+   doubled up so it still wins over the `.primary,.secondary` mobile rule. */
+.secondary.icon-btn{padding:0;width:42px;height:42px}
+.primary.btn-sm{padding:8px 11px;font-size:13.5px}
 /* Recycle bin: soft-deleted invoices stay visible but visually muted until restored. */
 .invoice-recycle{border-top:1px dashed var(--border);margin-top:4px;padding-top:13px}
 .recycle-toggle{display:inline-flex;align-items:center;gap:7px;margin:0 19px 0;background:none;border:0;color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;padding:4px 0}
