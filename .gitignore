@@ -12,6 +12,7 @@ android/app/build
 tsconfig.tsbuildinfo
 tmp_*.ps1
 tmp_*.cjs
+tmp_*.py
 
 # Android signing material and Firebase config must never be committed.
 android/app/keystore.properties
