@@ -22,7 +22,7 @@ export async function GET(req:Request){
     const target=e.targets[0]?Number(e.targets[0].amount):0;
     const agencyTarget=agencyMap.get(e.id)||0;
     const warrantyTarget=warrantyMap.get(e.id)||0;
-    return {employeeId:e.id,name:e.name,company:e.company.name,department:e.department.code,target,actual,achievement:target?actual/target*100:0,agencyTarget,agencyActual,agencyAchievement:agencyTarget?agencyActual/agencyTarget*100:0,warrantyTarget,warrantyActual,warrantyAchievement:warrantyTarget?warrantyActual/warrantyTarget*100:0};
+    return {employeeId:e.id,name:e.name,company:e.company.name,logo:e.logo,department:e.department.code,target,actual,achievement:target?actual/target*100:0,agencyTarget,agencyActual,agencyAchievement:agencyTarget?agencyActual/agencyTarget*100:0,warrantyTarget,warrantyActual,warrantyAchievement:warrantyTarget?warrantyActual/warrantyTarget*100:0};
   });
   const byDepartment=targets.map(t=>{
     const actual=invoices.filter(i=>employees.some(e=>e.id===i.employeeId&&e.departmentId===t.departmentId)).reduce((s,i)=>s+Number(i.amount),0);

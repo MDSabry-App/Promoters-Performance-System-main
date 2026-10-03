@@ -120,6 +120,13 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 .card-actions .mini.danger{color:var(--danger)}
 .card-actions .mini.danger:hover:not(:disabled){border-color:var(--danger);background:color-mix(in srgb,var(--danger) 8%,var(--surface))}
 .card-actions .mini:disabled{opacity:.5;cursor:not-allowed}
+/* Logo picker in the promoter form: a scrollable grid of the files in public/logos. */
+.logo-picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:7px;margin-top:7px;max-height:184px;overflow:auto;padding:2px}
+.logo-opt{display:grid;gap:4px;justify-items:center;padding:7px 4px;border:1px solid var(--border);border-radius:10px;background:var(--surface);cursor:pointer;font:inherit;color:var(--muted)}
+.logo-opt:hover{border-color:var(--accent)}
+.logo-opt.active{border-color:var(--accent);background:var(--soft);color:var(--accent)}
+.logo-opt img,.logo-opt .brand-mark{width:34px;height:34px;object-fit:contain}
+.logo-opt em{font-style:normal;font-size:10.5px;font-weight:700;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 .primary.btn-sm{padding:8px 11px;font-size:13.5px}
 /* Recycle bin: soft-deleted invoices stay visible but visually muted until restored. */
 .invoice-recycle{border-top:1px dashed var(--border);margin-top:4px;padding-top:13px}

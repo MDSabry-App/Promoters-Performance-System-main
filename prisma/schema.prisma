@@ -64,6 +64,9 @@ model Employee {
   name                  String
   companyId             String
   departmentId          String
+  // Optional explicit logo file in /public/logos. When empty the UI falls back to
+  // guessing the file from the company name, then to coloured initials.
+  logo                  String?
   status                EmployeeStatus           @default(ACTIVE)
   createdAt             DateTime                 @default(now())
   updatedAt             DateTime                 @updatedAt

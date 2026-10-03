@@ -9,7 +9,11 @@ const schema = z.object({
   name: z.string().trim().min(2),
   company: z.string().trim().min(1),
   departmentCode: z.string().min(1),
+  // Empty string means "guess it from the company name", which is stored as NULL.
+  logo: z.string().trim().optional(),
 });
+
+const logoOrNull = (v?: string) => (v ? v : null);
 
 export async function GET() {
   return NextResponse.json(
@@ -30,7 +34,7 @@ export async function POST(req: Request) {
     if (!dep) return NextResponse.json({ error: "Department not found" }, { status: 404 });
     const company = await prisma.company.upsert({ where: { name: d.company }, create: { name: d.company }, update: {} });
     const employee = await prisma.employee.create({
-      data: { name: d.name, companyId: company.id, departmentId: dep.id, employeeCode: "EMP-" + crypto.randomUUID().slice(0, 8).toUpperCase() },
+      data: { name: d.name, companyId: company.id, departmentId: dep.id, logo: logoOrNull(d.logo), employeeCode: "EMP-" + crypto.randomUUID().slice(0, 8).toUpperCase() },
     });
     await recordChange("CREATE", "Employee", employee.id, { name: d.name, company: d.company, departmentCode: d.departmentCode });
     await notifyAll({ title: "تمت إضافة مروج", body: `${d.name} · ${d.company} · ${d.departmentCode}`, tag: "employee", level: "important" });
@@ -54,7 +58,7 @@ export async function PUT(req: Request) {
 
     const employee = await prisma.employee.update({
       where: { id: d.id },
-      data: { name: d.name, companyId: company.id, departmentId: dep.id },
+      data: { name: d.name, companyId: company.id, departmentId: dep.id, logo: logoOrNull(d.logo) },
       include: { company: true, department: true },
     });
 
