@@ -90,6 +90,15 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 .danger-text{color:var(--danger)}
 .danger-text:hover{border-color:var(--danger)}
 .invoice-list .empty{grid-column:1/-1}
+/* Position of the promoter inside their department, next to the department tag. */
+.rank-badge{display:inline-block;margin-inline-start:7px;padding:1px 7px;border-radius:999px;background:var(--soft);color:var(--accent);font-size:11px;font-weight:800}
+/* Sales / Achievement ordering switch in the Promoter Performance header. */
+.sort-toggle{display:inline-flex;gap:4px;padding:3px;border:1px solid var(--border);border-radius:999px;background:var(--surface2)}
+.sort-toggle button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:999px;cursor:pointer}
+.sort-toggle button:hover{color:var(--text)}
+/* Matches the other tab groups (.dept-target-tabs / .inv-source-tabs), which use
+   --primary so the label stays readable in dark mode where --accent is light. */
+.sort-toggle button.active{background:var(--primary);color:#fff}
 /* Recycle bin: soft-deleted invoices stay visible but visually muted until restored. */
 .invoice-recycle{border-top:1px dashed var(--border);margin-top:4px;padding-top:13px}
 .recycle-toggle{display:inline-flex;align-items:center;gap:7px;margin:0 19px 0;background:none;border:0;color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;padding:4px 0}
