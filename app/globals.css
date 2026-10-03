@@ -108,6 +108,9 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
    Refresh. Both keep an accessible name through title/aria-label. The class is
    doubled up so it still wins over the `.primary,.secondary` mobile rule. */
 .secondary.icon-btn{padding:0;width:42px;height:42px}
+/* Manager mode has no label any more, so the active state has to be visible:
+   green, matching the existing `.push-on` convention. */
+.secondary.icon-btn.is-on{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,var(--border));background:color-mix(in srgb,var(--good) 10%,var(--soft))}
 .primary.btn-sm{padding:8px 11px;font-size:13.5px}
 /* Recycle bin: soft-deleted invoices stay visible but visually muted until restored. */
 .invoice-recycle{border-top:1px dashed var(--border);margin-top:4px;padding-top:13px}
