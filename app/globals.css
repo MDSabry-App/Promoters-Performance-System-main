@@ -61,13 +61,17 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 .action-sub:disabled,.action-add button:disabled{opacity:.45;cursor:not-allowed}
 .action-half{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:9px}
 .action-add{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:9px}
+/* Targets sit on one row and the Add buttons on the next, three across each. */
+.action-triple{grid-template-columns:repeat(3,1fr)}
+.action-triple-add{grid-template-columns:repeat(3,1fr)}
+.action-main.alt{background:var(--soft);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--border))}
 .action-add .full{min-height:44px;padding:10px 12px;font-weight:720;font-size:13.5px}
 .dept-target-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
 .dept-target-tabs button{border:1px solid var(--border);background:var(--soft);color:var(--text);border-radius:9px;padding:9px;font-weight:800;cursor:pointer;font-size:13.5px}
 .dept-target-tabs button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 .target-list label span{min-width:0}
 .target-list label span small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
-@media(max-width:800px){.action-panels{grid-template-columns:1fr}.action-half{grid-template-columns:1fr 1fr}.action-add{grid-template-columns:1fr}}
+@media(max-width:800px){.action-panels{grid-template-columns:1fr}.action-half{grid-template-columns:1fr 1fr}.action-add{grid-template-columns:1fr}.action-triple,.action-triple-add{grid-template-columns:1fr}}
 @media(max-width:430px){.action-main,.action-sub{font-size:13px;padding:10px 12px}.dept-target-tabs{grid-template-columns:1fr 1fr}}
 
 .invoice-option{border:1px solid var(--border);border-radius:12px;background:var(--surface2);padding:11px 12px;display:grid;gap:10px}.check-row{display:flex!important;grid-template-columns:none!important;align-items:center;justify-content:flex-start;gap:10px!important;margin:0;cursor:pointer;font-size:14px!important;font-weight:800!important}.check-row input{width:18px!important;height:18px!important;min-width:18px;accent-color:var(--accent);margin:0;padding:0;cursor:pointer}.check-row span{line-height:18px}.option-value{display:grid;grid-template-columns:130px 1fr;align-items:center;gap:10px;padding-top:9px;border-top:1px solid var(--border)}.option-value span{font-size:12px;color:var(--muted);font-weight:700}.option-value input{min-width:0}@media(max-width:430px){.option-value{grid-template-columns:1fr;gap:6px}}
@@ -111,6 +115,13 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 /* Manager mode has no label any more, so the active state has to be visible:
    green, matching the existing `.push-on` convention. */
 .secondary.icon-btn.is-on{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,var(--border));background:color-mix(in srgb,var(--good) 10%,var(--soft))}
+/* Per-promoter Edit / Remove, shown only while manager mode is on. */
+.card-actions{display:flex;gap:7px;padding:0 14px 13px}
+.card-actions .mini{flex:1;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:9px;padding:7px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.card-actions .mini:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.card-actions .mini.danger{color:var(--danger)}
+.card-actions .mini.danger:hover:not(:disabled){border-color:var(--danger);background:color-mix(in srgb,var(--danger) 8%,var(--surface))}
+.card-actions .mini:disabled{opacity:.5;cursor:not-allowed}
 .primary.btn-sm{padding:8px 11px;font-size:13.5px}
 /* Recycle bin: soft-deleted invoices stay visible but visually muted until restored. */
 .invoice-recycle{border-top:1px dashed var(--border);margin-top:4px;padding-top:13px}

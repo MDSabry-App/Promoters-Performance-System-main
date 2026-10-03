@@ -81,6 +81,44 @@ export async function POST(req: Request) {
   }
 }
 
+/** Rename a Stuff item or move it to another department. The company is fixed. */
+export async function PUT(req: Request) {
+  try { await requireManager(); }
+  catch { return NextResponse.json({ error: "Manager authentication required" }, { status: 401 }); }
+
+  try {
+    const data = createSchema.extend({ id: z.string().min(1) }).parse(await req.json());
+    const existing = await prisma.stuff.findUnique({ where: { id: data.id }, include: { department: true } });
+    if (!existing) return NextResponse.json({ error: "Stuff not found" }, { status: 404 });
+    const department = await prisma.department.findUnique({ where: { code: data.departmentCode } });
+    if (!department) return NextResponse.json({ error: "Department not found" }, { status: 404 });
+
+    const updated = await prisma.stuff.update({
+      where: { id: data.id },
+      data: { name: data.name, departmentId: department.id, notes: data.notes || null },
+      include: { department: true },
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        action: "UPDATE",
+        entity: "Stuff",
+        entityId: updated.id,
+        details: { name: updated.name, departmentCode: department.code },
+        before: { name: existing.name, departmentCode: existing.department.code, notes: existing.notes },
+        after: { name: updated.name, departmentCode: department.code, notes: updated.notes },
+      },
+    });
+
+    await notifyAll({ title: "تم تعديل Stuff", body: `${updated.name} · ${department.code}`, tag: "stuff", level: "important" });
+
+    return NextResponse.json({ ...updated, department: updated.department.code, amount: Number(updated.amount) });
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "Unknown database error";
+    return NextResponse.json({ error: message || "Unable to update stuff" }, { status: 400 });
+  }
+}
+
 export async function DELETE(req: Request) {
   try { await requireManager(); }
   catch { return NextResponse.json({ error: "Manager authentication required" }, { status: 401 }); }
