@@ -61,9 +61,10 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 .action-sub:disabled,.action-add button:disabled{opacity:.45;cursor:not-allowed}
 .action-half{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:9px}
 .action-add{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:9px}
-/* Targets sit on one row and the Add buttons on the next, three across each. */
+/* Targets sit on one row and the Add buttons on the next. */
 .action-triple{grid-template-columns:repeat(3,1fr)}
-.action-triple-add{grid-template-columns:repeat(3,1fr)}
+/* Only Add Invoice and Add Promoter remain on this row, so it splits in two. */
+.action-triple-add{grid-template-columns:repeat(2,1fr)}
 .action-main.alt{background:var(--soft);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--border))}
 .action-add .full{min-height:44px;padding:10px 12px;font-weight:720;font-size:13.5px}
 .dept-target-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
@@ -327,6 +328,9 @@ html[data-theme="dark"]{--colside:#0a182b}
 .stuff-actions .mini.danger:hover:not(:disabled){border-color:var(--danger);background:color-mix(in srgb,var(--danger) 8%,var(--surface))}
 .stuff-actions .mini:disabled{opacity:.5;cursor:not-allowed}
 /* Stuff B.TECH section heads, grouped by the department each one leads. */
+.stuff-team-add{display:flex;align-items:center;gap:10px;padding:0 19px 13px;flex-wrap:wrap}
+.stuff-team-add .mini{display:inline-flex;align-items:center;gap:6px}
+.stuff-team-add span{font-size:12px;color:var(--muted)}
 .stuff-team{padding:0 19px 19px;display:grid;gap:12px}
 .stuff-group{border:1px solid var(--border);border-radius:13px;background:var(--surface2);padding:11px}
 .stuff-group .group-head{display:flex;align-items:center;gap:9px;margin-bottom:9px}
@@ -337,7 +341,6 @@ html[data-theme="dark"]{--colside:#0a182b}
 .stuff-member .side-logo{width:32px;height:32px;border-radius:9px}
 .stuff-member .brand-mark{width:32px;height:32px}
 .member-name{font-size:13.5px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.panelhead-sub{color:var(--muted);font-size:13px}
 .stuff-name{font-size:13.5px;font-weight:800;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stuff-co{font-size:10.5px;color:var(--muted);background:var(--soft);border:1px solid var(--border);border-radius:999px;padding:2px 9px;justify-self:start;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stuff-dept{font-size:11px;font-weight:850;color:var(--accent);letter-spacing:.05em}
