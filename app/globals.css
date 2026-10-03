@@ -92,12 +92,19 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 .invoice-list .empty{grid-column:1/-1}
 /* Position of the promoter inside their department, next to the department tag. */
 .rank-badge{display:inline-block;margin-inline-start:7px;padding:1px 7px;border-radius:999px;background:var(--soft);color:var(--accent);font-size:11px;font-weight:800}
-/* Colour theme: small circles instead of a wide select, to save header space. */
-.palette-swatches{display:inline-flex;align-items:center;gap:6px}
-.palette-swatches .swatch{width:19px;height:19px;border-radius:50%;border:2px solid transparent;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);cursor:pointer;padding:0;transition:transform .12s,box-shadow .12s}
-.palette-swatches .swatch:hover{transform:scale(1.14)}
-.palette-swatches .swatch.active{border-color:var(--text);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12),0 0 0 2px var(--surface)}
-.palette-swatches .swatch:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* Colour theme: keeps the original select's look and height, but each option shows
+   the colour itself. A native <select> cannot render a swatch, hence the dropdown. */
+.palette-select{position:relative}
+.palette-trigger{height:42px;min-width:132px;display:flex;align-items:center;gap:9px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;padding:0 11px;font:inherit;font-weight:700;cursor:pointer}
+.palette-trigger:hover{border-color:var(--accent)}
+.palette-trigger-label{flex:1;text-align:left}
+.palette-caret{color:var(--muted);transition:transform .15s}
+.palette-caret.open{transform:rotate(180deg)}
+.swatch-dot{width:17px;height:17px;border-radius:50%;flex:0 0 auto;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.palette-menu{position:absolute;top:calc(100% + 6px);left:0;z-index:40;min-width:100%;padding:5px;display:grid;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.16)}
+.palette-option{display:flex;align-items:center;gap:9px;border:0;background:transparent;color:var(--text);font:inherit;font-size:14px;font-weight:650;text-align:left;padding:9px 10px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.palette-option:hover{background:var(--soft)}
+.palette-option.active{background:var(--soft);color:var(--accent);font-weight:800}
 /* Recycle bin: soft-deleted invoices stay visible but visually muted until restored. */
 .invoice-recycle{border-top:1px dashed var(--border);margin-top:4px;padding-top:13px}
 .recycle-toggle{display:inline-flex;align-items:center;gap:7px;margin:0 19px 0;background:none;border:0;color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;padding:4px 0}
