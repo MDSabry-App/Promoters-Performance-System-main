@@ -26,6 +26,9 @@ export type ChangeEvent = {
   level: ChangeLevel;
   at: string;
   details: Record<string, unknown> | null;
+  /** Full value snapshots written by the routes; null for entries logged before this. */
+  before: Record<string, unknown> | null;
+  after: Record<string, unknown> | null;
 };
 
 type AuditRow = {
@@ -34,6 +37,8 @@ type AuditRow = {
   entity: string;
   entityId: string | null;
   details: unknown;
+  before?: unknown;
+  after?: unknown;
   createdAt: Date;
 };
 
@@ -63,6 +68,8 @@ const levelOf = (action: AuditAction, kind: ChangeKind): ChangeLevel => {
  */
 export function toChangeEvent(row: AuditRow): ChangeEvent {
   const d = (row.details ?? {}) as Record<string, any>;
+  const before = (row.before ?? null) as Record<string, any> | null;
+  const after = (row.after ?? null) as Record<string, any> | null;
   const kind = kindOf(row.entity);
   const level = levelOf(row.action, kind);
 
@@ -74,13 +81,18 @@ export function toChangeEvent(row: AuditRow): ChangeEvent {
       const num = d.invoiceNumber || "فاتورة";
       if (row.action === "DELETE") {
         title = "تم حذف فاتورة";
-        body = num;
+        // `before` carries the amount, so the notification no longer hides the value
+        // that was just removed — and the row itself is still recoverable.
+        body = before ? `${num} · ${money(before.amount)} · يمكن استرجاعها` : num;
+      } else if (row.action === "RESTORE") {
+        title = "تم استرجاع فاتورة";
+        body = `${num}${after ? ` · ${money(after.amount)}` : ""}`;
       } else if (row.action === "UPDATE") {
         title = "تم تعديل فاتورة";
-        body = num;
+        body = after && before ? `${num} · ${money(before.amount)} ← ${money(after.amount)}` : num;
       } else {
         title = "فاتورة جديدة";
-        body = num;
+        body = after ? `${num} · ${money(after.amount)}` : num;
       }
       break;
     }
@@ -146,6 +158,8 @@ export function toChangeEvent(row: AuditRow): ChangeEvent {
     level,
     at: row.createdAt.toISOString(),
     details: (row.details as Record<string, unknown>) ?? null,
+    before: (row.before as Record<string, unknown>) ?? null,
+    after: (row.after as Record<string, unknown>) ?? null,
   };
 }
 

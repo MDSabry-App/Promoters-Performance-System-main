@@ -7,7 +7,7 @@ export async function GET(req:Request){
   const from=new Date(Date.UTC(year,month-1,1)),to=new Date(Date.UTC(year,month,1));
   const [employees,invoices,targets,warranty,agency]=await Promise.all([
     prisma.employee.findMany({where:{status:"ACTIVE"},include:{department:true,company:true,targets:{where:{year,month}}},orderBy:[{department:{code:"asc"}},{name:"asc"}]}),
-    prisma.invoice.findMany({where:{date:{gte:from,lt:to}},select:{date:true,amount:true,warranty:true,agency:true,employeeId:true,invoiceNumber:true},orderBy:{date:"asc"}}),
+    prisma.invoice.findMany({where:{date:{gte:from,lt:to},deletedAt:null},select:{date:true,amount:true,warranty:true,agency:true,employeeId:true,invoiceNumber:true},orderBy:{date:"asc"}}),
     prisma.monthlyTarget.findMany({where:{year,month},include:{department:true}}),
     prisma.warrantyTarget.findUnique({where:{year_month:{year,month}},include:{employeeTargets:true}}),
     prisma.agencyTarget.findUnique({where:{year_month:{year,month}},include:{employeeTargets:true}})

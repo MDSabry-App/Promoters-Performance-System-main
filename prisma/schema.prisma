@@ -28,6 +28,7 @@ enum AuditAction {
   CREATE
   UPDATE
   DELETE
+  RESTORE
   LOGIN
   CLOSE_MONTH
   REOPEN_MONTH
@@ -147,20 +148,25 @@ model EmployeeAgencyTarget {
 }
 
 model Invoice {
-  id            String   @id @default(cuid())
-  invoiceNumber String   @unique
+  id            String    @id @default(cuid())
+  invoiceNumber String    @unique
   date          DateTime
   employeeId    String
-  amount        Decimal  @db.Decimal(14, 2)
-  warranty      Decimal  @default(0) @db.Decimal(14, 2)
-  agency        Decimal  @default(0) @db.Decimal(14, 2)
+  amount        Decimal   @db.Decimal(14, 2)
+  warranty      Decimal   @default(0) @db.Decimal(14, 2)
+  agency        Decimal   @default(0) @db.Decimal(14, 2)
   notes         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  employee      Employee @relation(fields: [employeeId], references: [id])
+  // Soft delete: a deleted invoice stays in the table so it can be brought back.
+  // Every read path filters on `deletedAt: null`, so it never affects reports.
+  deletedAt     DateTime?
+  deletedBy     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  employee      Employee  @relation(fields: [employeeId], references: [id])
 
   @@index([date])
   @@index([employeeId, date])
+  @@index([deletedAt])
 }
 
 model Stuff {
@@ -208,7 +214,12 @@ model AuditLog {
   entity    String
   entityId  String?
   details   Json?
+  // Full before/after snapshots of the changed fields. Without these an edit only
+  // left the invoice number behind, so the previous values were lost forever.
+  before    Json?
+  after     Json?
   createdAt DateTime    @default(now())
 
   @@index([createdAt])
+  @@index([entity, entityId])
 }

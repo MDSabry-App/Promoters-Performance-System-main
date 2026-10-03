@@ -68,6 +68,59 @@ npm run dev                       # http://localhost:3000
 
 ---
 
+## Protecting your data
+
+The dashboard lives in a single Neon database with no history of its own, and on
+2026-10-01 four invoices were deleted by mistake. The audit log only held their
+invoice numbers, so the amounts could never be recovered. Three safeguards now stop
+that from happening again.
+
+### 1. Backups (`npm run db:backup`)
+
+Dumps every table to `backups/latest.json` plus a dated copy. A GitHub Actions
+workflow (`.github/workflows/db-backup.yml`) runs it every day at 02:00 UTC and
+commits the result, so **every day is a restore point in the repository history**.
+
+```bash
+npm run db:backup                 # take a snapshot now
+```
+
+Requires the repository secrets `DATABASE_URL` and `DIRECT_URL` in
+**Settings → Secrets and variables → Actions**.
+
+### 2. Restoring (`npm run db:restore`)
+
+Dry run by default — it prints what would change and writes nothing:
+
+```bash
+npm run db:restore                              # scan backups/latest.json
+npm run db:restore -- backups/2026-10-03.json   # scan a specific day
+npm run db:restore -- backups/latest.json --yes # actually apply
+```
+
+Only `--yes` writes. Applying upserts the dump back and removes rows that are not in
+it, so pause the app while it runs.
+
+### 3. Soft delete + recycle bin
+
+Deleting an invoice no longer removes the row. It is stamped with `deletedAt` and
+kept out of every report (`deletedAt: null` is filtered on all read paths).
+
+- `GET /api/invoices/deleted?year=&month=` — the recycle bin (manager only)
+- `PATCH /api/invoices?id=` — restore an invoice
+
+The dashboard shows the bin under the invoice list, with a **Restore** button per
+row. Rows are dimmed and struck through so they are clearly out of the totals.
+
+### 4. Full audit trail
+
+`AuditLog` now stores `before` and `after` JSON snapshots, so an edit no longer
+destroys the values it replaced — you can always see the old amount and promoter.
+The change feed renders these too (`12,000 ← 15,000`), and invoice deletions are
+reported with the amount that was removed.
+
+---
+
 ## Push notifications
 
 There are **two independent layers**. Together they give you a notification for

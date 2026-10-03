@@ -90,6 +90,14 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 .danger-text{color:var(--danger)}
 .danger-text:hover{border-color:var(--danger)}
 .invoice-list .empty{grid-column:1/-1}
+/* Recycle bin: soft-deleted invoices stay visible but visually muted until restored. */
+.invoice-recycle{border-top:1px dashed var(--border);margin-top:4px;padding-top:13px}
+.recycle-toggle{display:inline-flex;align-items:center;gap:7px;margin:0 19px 0;background:none;border:0;color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;padding:4px 0}
+.recycle-toggle:hover{color:var(--danger)}
+.invoice-list.deleted{opacity:.72}
+.invoice-row.is-deleted{border-style:dashed}
+.invoice-row.is-deleted .inv-ico{background:transparent;color:var(--muted)}
+.invoice-row.is-deleted .inv-amount{text-decoration:line-through;color:var(--muted)}
 .bar{display:flex;align-items:center;gap:8px;font-size:11px}
 .bar .track{flex:1;min-width:36px;height:10px;border-radius:999px;background:var(--border);overflow:hidden}
 .bar .track i{display:block;height:100%;border-radius:999px;background:currentColor}

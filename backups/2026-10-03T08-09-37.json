@@ -1,0 +1,866 @@
+{
+  "meta": {
+    "generatedAt": "2026-10-03T08:09:37.130Z",
+    "generator": "scripts/db-backup.mjs",
+    "counts": {
+      "departments": 4,
+      "companies": 22,
+      "employees": 36,
+      "invoices": 7,
+      "deletedInvoices": 0,
+      "stuff": 0,
+      "monthlyTargets": 4
+    }
+  },
+  "departments": [
+    {
+      "id": "cmupxe72a000j0aq8lixfgxlt",
+      "code": "MDA",
+      "name": "MDA"
+    },
+    {
+      "id": "cmupxedbs00180aq8iho6dr11",
+      "code": "MOBILE",
+      "name": "MOBILE"
+    },
+    {
+      "id": "cmupxe19o00000aq8nwcm9n10",
+      "code": "SDA",
+      "name": "SDA"
+    },
+    {
+      "id": "cmupxejcx001x0aq8qux0dmea",
+      "code": "TV-AC",
+      "name": "TV-AC"
+    }
+  ],
+  "companies": [
+    {
+      "id": "cmupxe26j00010aq8fy7gacmk",
+      "name": "Black & W"
+    },
+    {
+      "id": "cmupxe4zf000a0aq85b5hl9al",
+      "name": "Black-D"
+    },
+    {
+      "id": "cmupxead8000w0aq8phpu29s8",
+      "name": "Bosch"
+    },
+    {
+      "id": "cmupxe48r00070aq860vw0krg",
+      "name": "Castle"
+    },
+    {
+      "id": "cmupxeb1u000z0aq8r2ahpa8s",
+      "name": "El Araby"
+    },
+    {
+      "id": "cmupxe9on000t0aq8msczg2e3",
+      "name": "Fresh"
+    },
+    {
+      "id": "cmupxe6d3000g0aq8svsekg60",
+      "name": "HERVY"
+    },
+    {
+      "id": "cmupxeklw00210aq8f0rsm3cl",
+      "name": "Haier"
+    },
+    {
+      "id": "cmupxejxb001y0aq8fmlnma8d",
+      "name": "Hisense"
+    },
+    {
+      "id": "cmupxef9f001f0aq8ruij3uvb",
+      "name": "Joyroom"
+    },
+    {
+      "id": "cmupxe7mr000k0aq84uxmxcxa",
+      "name": "Kiriazi"
+    },
+    {
+      "id": "cmupxe8bf000n0aq83jye09wo",
+      "name": "Midea"
+    },
+    {
+      "id": "cmupxe5o9000d0aq8ee1w8082",
+      "name": "Mienta"
+    },
+    {
+      "id": "cmupxefy0001i0aq8wo801gny",
+      "name": "Oppo"
+    },
+    {
+      "id": "cmupxeekt001c0aq8aghynltj",
+      "name": "Realme"
+    },
+    {
+      "id": "cmupxe8zz000q0aq8c3sznbld",
+      "name": "Royal Gas"
+    },
+    {
+      "id": "cmupxegmm001l0aq85zgpr6xa",
+      "name": "Samsung"
+    },
+    {
+      "id": "cmupxe3eg00040aq8u4cv7613",
+      "name": "Smart"
+    },
+    {
+      "id": "cmur89ar900000amwk1bf7c0f",
+      "name": "Stuff B.TECH"
+    },
+    {
+      "id": "cmupxedw700190aq8nqgjr972",
+      "name": "Vivo"
+    },
+    {
+      "id": "cmupxeiob001u0aq8xer5xclj",
+      "name": "Xiaomi"
+    },
+    {
+      "id": "cmupxecn800150aq87mtzqbsx",
+      "name": "Zanussi"
+    }
+  ],
+  "employees": [
+    {
+      "id": "cmur89c7600020amwffhti8tm",
+      "employeeCode": "EMP-1803CF45",
+      "name": "كريم منصور",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxejcx001x0aq8qux0dmea",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:18:59.586Z",
+      "updatedAt": "2026-10-02T17:18:59.586Z"
+    },
+    {
+      "id": "cmur89ej8000e0amwu9s29nao",
+      "employeeCode": "EMP-27E84639",
+      "name": "فاطمة مجدي",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxe19o00000aq8nwcm9n10",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:02.612Z",
+      "updatedAt": "2026-10-02T17:19:02.612Z"
+    },
+    {
+      "id": "cmur89dsn000a0amw6wr6acyj",
+      "employeeCode": "EMP-502752EE",
+      "name": "اسلام رمضان",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:01.655Z",
+      "updatedAt": "2026-10-02T17:19:01.655Z"
+    },
+    {
+      "id": "cmur89d2d00060amwko3prz8a",
+      "employeeCode": "EMP-617B299C",
+      "name": "Other",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxejcx001x0aq8qux0dmea",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:00.709Z",
+      "updatedAt": "2026-10-02T17:19:00.709Z"
+    },
+    {
+      "id": "cmur89f9l000i0amw8c77defm",
+      "employeeCode": "EMP-83FFD038",
+      "name": "محمد يحيي",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:03.561Z",
+      "updatedAt": "2026-10-02T17:19:03.561Z"
+    },
+    {
+      "id": "cmur89co400040amw4b0ye98p",
+      "employeeCode": "EMP-9D6FF436",
+      "name": "ربيع محمد",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxejcx001x0aq8qux0dmea",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:00.196Z",
+      "updatedAt": "2026-10-02T17:19:00.196Z"
+    },
+    {
+      "id": "cmur89dgn00080amwvasl3d34",
+      "employeeCode": "EMP-A4C67BD9",
+      "name": "عمر النزلاوي",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:01.223Z",
+      "updatedAt": "2026-10-02T17:19:01.223Z"
+    },
+    {
+      "id": "cmur89fxy000m0amwavn0flr6",
+      "employeeCode": "EMP-A7CFE283",
+      "name": "Other",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:04.439Z",
+      "updatedAt": "2026-10-02T17:19:04.439Z"
+    },
+    {
+      "id": "cmur89e50000c0amwiwa6sncq",
+      "employeeCode": "EMP-ADBD8B69",
+      "name": "Other",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:02.101Z",
+      "updatedAt": "2026-10-02T17:19:02.101Z"
+    },
+    {
+      "id": "cmur89exg000g0amwh8t2s7fn",
+      "employeeCode": "EMP-D2802689",
+      "name": "Other",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxe19o00000aq8nwcm9n10",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:03.125Z",
+      "updatedAt": "2026-10-02T17:19:03.125Z"
+    },
+    {
+      "id": "cmur89flx000k0amwtmjcjgvo",
+      "employeeCode": "EMP-DC220B6E",
+      "name": "ماركو مكين",
+      "companyId": "cmur89ar900000amwk1bf7c0f",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T17:19:04.005Z",
+      "updatedAt": "2026-10-02T17:19:04.005Z"
+    },
+    {
+      "id": "cmupxe34k00030aq81uhusxkq",
+      "employeeCode": "SEED-0AF39D93",
+      "name": "ياسمين احمد عبدالوهاب",
+      "companyId": "cmupxe26j00010aq8fy7gacmk",
+      "departmentId": "cmupxe19o00000aq8nwcm9n10",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:26:59.157Z",
+      "updatedAt": "2026-10-01T19:26:59.157Z"
+    },
+    {
+      "id": "cmupxef5b001e0aq8l0m6ofyn",
+      "employeeCode": "SEED-0E9C68A7",
+      "name": "هشام ايمن",
+      "companyId": "cmupxeekt001c0aq8aghynltj",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:14.735Z",
+      "updatedAt": "2026-10-01T19:27:14.735Z"
+    },
+    {
+      "id": "cmupxekhr00200aq8zsxdjy8x",
+      "employeeCode": "SEED-130C40F3",
+      "name": "محمود حسين مسعود",
+      "companyId": "cmupxejxb001y0aq8fmlnma8d",
+      "departmentId": "cmupxejcx001x0aq8qux0dmea",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:21.663Z",
+      "updatedAt": "2026-10-01T19:27:21.663Z"
+    },
+    {
+      "id": "cmupxe5k5000c0aq8ue0vwwdz",
+      "employeeCode": "SEED-14D1CF04",
+      "name": "ميرنا اشرف سعيد",
+      "companyId": "cmupxe4zf000a0aq85b5hl9al",
+      "departmentId": "cmupxe19o00000aq8nwcm9n10",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:02.309Z",
+      "updatedAt": "2026-10-01T19:27:02.309Z"
+    },
+    {
+      "id": "cmupxebm900110aq8ezbjv3vu",
+      "employeeCode": "SEED-1A326822",
+      "name": "سعيد عبدالعظيم عبدالتواب",
+      "companyId": "cmupxeb1u000z0aq8r2ahpa8s",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:10.162Z",
+      "updatedAt": "2026-10-01T19:27:10.162Z"
+    },
+    {
+      "id": "cmupxed7o00170aq8lcz9kpmm",
+      "employeeCode": "SEED-1A416ED5",
+      "name": "زهراء محمد عبدالتواب صابر",
+      "companyId": "cmupxecn800150aq87mtzqbsx",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:12.228Z",
+      "updatedAt": "2026-10-01T19:27:12.228Z"
+    },
+    {
+      "id": "cmupxe68z000f0aq8pulz5hlw",
+      "employeeCode": "SEED-29C45028",
+      "name": "ندي سيد احمد عوض علي",
+      "companyId": "cmupxe5o9000d0aq8ee1w8082",
+      "departmentId": "cmupxe19o00000aq8nwcm9n10",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:03.203Z",
+      "updatedAt": "2026-10-01T19:27:03.203Z"
+    },
+    {
+      "id": "cmupxe6y5000i0aq8qfzia649",
+      "employeeCode": "SEED-44A83FC5",
+      "name": "سمر صلاح عبدالحميد",
+      "companyId": "cmupxe6d3000g0aq8svsekg60",
+      "departmentId": "cmupxe19o00000aq8nwcm9n10",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:04.110Z",
+      "updatedAt": "2026-10-01T19:27:04.110Z"
+    },
+    {
+      "id": "cmupxe43500060aq855p4lsii",
+      "employeeCode": "SEED-4B1B4C7A",
+      "name": "بسنت محمد سيد",
+      "companyId": "cmupxe3eg00040aq8u4cv7613",
+      "departmentId": "cmupxe19o00000aq8nwcm9n10",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:00.401Z",
+      "updatedAt": "2026-10-01T19:27:00.401Z"
+    },
+    {
+      "id": "cmupxecj300140aq8jothacnz",
+      "employeeCode": "SEED-4C9B18BD",
+      "name": "مجدي ابراهيم محمد",
+      "companyId": "cmupxeb1u000z0aq8r2ahpa8s",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:11.195Z",
+      "updatedAt": "2026-10-01T19:27:11.195Z"
+    },
+    {
+      "id": "cmupxe87a000m0aq8a3oxdrxr",
+      "employeeCode": "SEED-5783E7B0",
+      "name": "ايهاب سلامه محمد",
+      "companyId": "cmupxe7mr000k0aq84uxmxcxa",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:05.735Z",
+      "updatedAt": "2026-10-01T19:27:05.735Z"
+    },
+    {
+      "id": "cmupxej8q001w0aq83ft3m9rw",
+      "employeeCode": "SEED-5F820471",
+      "name": "عمرو عويس",
+      "companyId": "cmupxeiob001u0aq8xer5xclj",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:20.043Z",
+      "updatedAt": "2026-10-01T19:27:20.043Z"
+    },
+    {
+      "id": "cmupxe8vu000p0aq8h8gxycov",
+      "employeeCode": "SEED-5FEE338F",
+      "name": "رضا محمد محمد مصطفي",
+      "companyId": "cmupxe8bf000n0aq83jye09wo",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:06.619Z",
+      "updatedAt": "2026-10-01T19:27:06.619Z"
+    },
+    {
+      "id": "cmupxeluy00260aq82f8quzq9",
+      "employeeCode": "SEED-65D102E1",
+      "name": "يوسف سامي يوسف",
+      "companyId": "cmupxegmm001l0aq85zgpr6xa",
+      "departmentId": "cmupxejcx001x0aq8qux0dmea",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:23.434Z",
+      "updatedAt": "2026-10-01T19:27:23.434Z"
+    },
+    {
+      "id": "cmupxeftw001h0aq857ny31ia",
+      "employeeCode": "SEED-66E50411",
+      "name": "تسنيم اسماعيل علي",
+      "companyId": "cmupxef9f001f0aq8ruij3uvb",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:15.620Z",
+      "updatedAt": "2026-10-01T19:27:15.620Z"
+    },
+    {
+      "id": "cmupxeik8001t0aq8yrqqniip",
+      "employeeCode": "SEED-732290AE",
+      "name": "عمر حسين",
+      "companyId": "cmupxedw700190aq8nqgjr972",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:19.160Z",
+      "updatedAt": "2026-10-01T19:27:19.160Z"
+    },
+    {
+      "id": "cmupxea94000v0aq8kw4adrgn",
+      "employeeCode": "SEED-A02D9B76",
+      "name": "احمد حسين محمد",
+      "companyId": "cmupxe9on000t0aq8msczg2e3",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:08.392Z",
+      "updatedAt": "2026-10-01T19:27:08.392Z"
+    },
+    {
+      "id": "cmupxegih001k0aq823uvl1p6",
+      "employeeCode": "SEED-BE29A784",
+      "name": "حسام ابراهيم",
+      "companyId": "cmupxefy0001i0aq8wo801gny",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:16.506Z",
+      "updatedAt": "2026-10-01T19:27:16.506Z"
+    },
+    {
+      "id": "cmupxe9kh000s0aq8wvnpu395",
+      "employeeCode": "SEED-C72565DF",
+      "name": "سيف ماجد محمد",
+      "companyId": "cmupxe8zz000q0aq8c3sznbld",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:07.505Z",
+      "updatedAt": "2026-10-01T19:27:07.505Z"
+    },
+    {
+      "id": "cmupxeego001b0aq80pwc5ta5",
+      "employeeCode": "SEED-D6532A48",
+      "name": "محمد يونس",
+      "companyId": "cmupxedw700190aq8nqgjr972",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:13.848Z",
+      "updatedAt": "2026-10-01T19:27:13.848Z"
+    },
+    {
+      "id": "cmupxehvm001q0aq8qbbhchd9",
+      "employeeCode": "SEED-DC3542D8",
+      "name": "علي شعبان",
+      "companyId": "cmupxegmm001l0aq85zgpr6xa",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:18.275Z",
+      "updatedAt": "2026-10-01T19:27:18.275Z"
+    },
+    {
+      "id": "cmupxeh71001n0aq8t71v2lo4",
+      "employeeCode": "SEED-E4A2D4F2",
+      "name": "محمد مجدي",
+      "companyId": "cmupxegmm001l0aq85zgpr6xa",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:17.390Z",
+      "updatedAt": "2026-10-01T19:27:17.390Z"
+    },
+    {
+      "id": "cmupxe4vb00090aq8wddwp95l",
+      "employeeCode": "SEED-E5E51DDE",
+      "name": "هشام محمد قرني",
+      "companyId": "cmupxe48r00070aq860vw0krg",
+      "departmentId": "cmupxe19o00000aq8nwcm9n10",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:01.416Z",
+      "updatedAt": "2026-10-01T19:27:01.416Z"
+    },
+    {
+      "id": "cmupxel6d00230aq8g7vbnn1x",
+      "employeeCode": "SEED-F7A7CDAC",
+      "name": "فاطمه مصطفي حسين",
+      "companyId": "cmupxeklw00210aq8f0rsm3cl",
+      "departmentId": "cmupxejcx001x0aq8qux0dmea",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:22.549Z",
+      "updatedAt": "2026-10-01T19:27:22.549Z"
+    },
+    {
+      "id": "cmupxeaxq000y0aq8mk27ypzl",
+      "employeeCode": "SEED-F8B5689F",
+      "name": "احمد عادل صادق",
+      "companyId": "cmupxead8000w0aq8phpu29s8",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:27:09.278Z",
+      "updatedAt": "2026-10-01T19:27:09.278Z"
+    }
+  ],
+  "invoices": [
+    {
+      "id": "cmuqyf3ie0001jq04j0evm6w2",
+      "invoiceNumber": "INV-1790945012101-VSJZZO",
+      "date": "2026-10-01T00:00:00.000Z",
+      "employeeId": "cmupxel6d00230aq8g7vbnn1x",
+      "amount": "13499",
+      "warranty": "0",
+      "agency": "0",
+      "notes": "",
+      "deletedAt": null,
+      "deletedBy": null,
+      "createdAt": "2026-10-02T12:43:32.103Z",
+      "updatedAt": "2026-10-02T12:43:32.103Z"
+    },
+    {
+      "id": "cmuqyfh1x0004ld04kdpf6egp",
+      "invoiceNumber": "INV-1790945029652-C83SH6",
+      "date": "2026-10-01T00:00:00.000Z",
+      "employeeId": "cmupxe9kh000s0aq8wvnpu395",
+      "amount": "4920",
+      "warranty": "0",
+      "agency": "0",
+      "notes": "",
+      "deletedAt": null,
+      "deletedBy": null,
+      "createdAt": "2026-10-02T12:43:49.653Z",
+      "updatedAt": "2026-10-02T12:43:49.653Z"
+    },
+    {
+      "id": "cmuqye5e80001ld044433htbp",
+      "invoiceNumber": "INV-1790944967885-PKY31A",
+      "date": "2026-10-01T00:00:00.000Z",
+      "employeeId": "cmupxe8vu000p0aq8h8gxycov",
+      "amount": "27652",
+      "warranty": "0",
+      "agency": "0",
+      "notes": "",
+      "deletedAt": null,
+      "deletedBy": null,
+      "createdAt": "2026-10-02T12:42:47.888Z",
+      "updatedAt": "2026-10-02T12:44:40.968Z"
+    },
+    {
+      "id": "cmuqyengt0001jp040ulgnqm0",
+      "invoiceNumber": "INV-1790944991308-SGEYH5",
+      "date": "2026-10-01T00:00:00.000Z",
+      "employeeId": "cmupxeaxq000y0aq8mk27ypzl",
+      "amount": "23999",
+      "warranty": "0",
+      "agency": "0",
+      "notes": "",
+      "deletedAt": null,
+      "deletedBy": null,
+      "createdAt": "2026-10-02T12:43:11.309Z",
+      "updatedAt": "2026-10-02T12:45:40.461Z"
+    },
+    {
+      "id": "cmuqyici10002jm045t8rzqhu",
+      "invoiceNumber": "INV-1790945163720-G4ADD2",
+      "date": "2026-10-01T00:00:00.000Z",
+      "employeeId": "cmupxe8vu000p0aq8h8gxycov",
+      "amount": "26822",
+      "warranty": "0",
+      "agency": "0",
+      "notes": "",
+      "deletedAt": null,
+      "deletedBy": null,
+      "createdAt": "2026-10-02T12:46:03.721Z",
+      "updatedAt": "2026-10-02T12:46:03.721Z"
+    },
+    {
+      "id": "cmuqyir0l0007ld041jwz324r",
+      "invoiceNumber": "INV-1790945182533-IA3D8B",
+      "date": "2026-10-01T00:00:00.000Z",
+      "employeeId": "cmupxeaxq000y0aq8mk27ypzl",
+      "amount": "5499",
+      "warranty": "0",
+      "agency": "0",
+      "notes": "",
+      "deletedAt": null,
+      "deletedBy": null,
+      "createdAt": "2026-10-02T12:46:22.534Z",
+      "updatedAt": "2026-10-02T12:46:22.534Z"
+    },
+    {
+      "id": "cmuqyj5n40004jq04wlnz1vzr",
+      "invoiceNumber": "INV-1790945201487-WSR2DL",
+      "date": "2026-10-01T00:00:00.000Z",
+      "employeeId": "cmupxeaxq000y0aq8mk27ypzl",
+      "amount": "9219",
+      "warranty": "0",
+      "agency": "0",
+      "notes": "",
+      "deletedAt": null,
+      "deletedBy": null,
+      "createdAt": "2026-10-02T12:46:41.488Z",
+      "updatedAt": "2026-10-02T12:46:41.488Z"
+    }
+  ],
+  "stuff": [],
+  "monthlyTargets": [
+    {
+      "id": "cmupzwqk40001l604nuxo6grd",
+      "year": "2026",
+      "month": "10",
+      "departmentId": "cmupxedbs00180aq8iho6dr11",
+      "amount": "0"
+    },
+    {
+      "id": "cmuq03hsa0001l90443p1ux4p",
+      "year": "2026",
+      "month": "10",
+      "departmentId": "cmupxe19o00000aq8nwcm9n10",
+      "amount": "0"
+    },
+    {
+      "id": "cmuq0gop00001js04n9x993r6",
+      "year": "2026",
+      "month": "10",
+      "departmentId": "cmupxe72a000j0aq8lixfgxlt",
+      "amount": "0"
+    },
+    {
+      "id": "cmupz7nda0001l304e6qsgdyg",
+      "year": "2026",
+      "month": "10",
+      "departmentId": "cmupxejcx001x0aq8qux0dmea",
+      "amount": "0"
+    }
+  ],
+  "employeeTargets": [
+    {
+      "id": "cmurein7w00020arskqadiksq",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxe34k00030aq81uhusxkq",
+      "monthlyTargetId": "cmuq03hsa0001l90443p1ux4p",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmurein7w00030arsepsgb51u",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxe43500060aq855p4lsii",
+      "monthlyTargetId": "cmuq03hsa0001l90443p1ux4p",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmurein7w00040arsdpi7xxvs",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxe4vb00090aq8wddwp95l",
+      "monthlyTargetId": "cmuq03hsa0001l90443p1ux4p",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmurein7w00050arscuocl44e",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxe5k5000c0aq8ue0vwwdz",
+      "monthlyTargetId": "cmuq03hsa0001l90443p1ux4p",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmurein7w00060arsjtbazow2",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxe68z000f0aq8pulz5hlw",
+      "monthlyTargetId": "cmuq03hsa0001l90443p1ux4p",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmurein7w00070arsj8mgk30o",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxe6y5000i0aq8qfzia649",
+      "monthlyTargetId": "cmuq03hsa0001l90443p1ux4p",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmureiv39000b0arspq23bc0d",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxe87a000m0aq8a3oxdrxr",
+      "monthlyTargetId": "cmuq0gop00001js04n9x993r6",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmureiv39000c0arsy90e37li",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxe8vu000p0aq8h8gxycov",
+      "monthlyTargetId": "cmuq0gop00001js04n9x993r6",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmureiv39000d0arsuq2obep8",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxe9kh000s0aq8wvnpu395",
+      "monthlyTargetId": "cmuq0gop00001js04n9x993r6",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmureiv39000e0arsvswh1bla",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxea94000v0aq8kw4adrgn",
+      "monthlyTargetId": "cmuq0gop00001js04n9x993r6",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmureiv39000f0arshbe6me75",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxeaxq000y0aq8mk27ypzl",
+      "monthlyTargetId": "cmuq0gop00001js04n9x993r6",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmureiv39000g0arszy5k4jph",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxebm900110aq8ezbjv3vu",
+      "monthlyTargetId": "cmuq0gop00001js04n9x993r6",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmureiv39000h0arsln4qnusm",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxecj300140aq8jothacnz",
+      "monthlyTargetId": "cmuq0gop00001js04n9x993r6",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmureiv39000i0arsho8xjdxq",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxed7o00170aq8lcz9kpmm",
+      "monthlyTargetId": "cmuq0gop00001js04n9x993r6",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmurej8jg000m0ars23npzf61",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxekhr00200aq8zsxdjy8x",
+      "monthlyTargetId": "cmupz7nda0001l304e6qsgdyg",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmurej8jg000n0arslfr9o97d",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxel6d00230aq8g7vbnn1x",
+      "monthlyTargetId": "cmupz7nda0001l304e6qsgdyg",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmurej8jg000o0ars0u2hcuyk",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxeluy00260aq82f8quzq9",
+      "monthlyTargetId": "cmupz7nda0001l304e6qsgdyg",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmur7u8ne001e0am0ztxcp5lm",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxeego001b0aq80pwc5ta5",
+      "monthlyTargetId": "cmupzwqk40001l604nuxo6grd",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmur7u8ne001f0am0sqqir08c",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxef5b001e0aq8l0m6ofyn",
+      "monthlyTargetId": "cmupzwqk40001l604nuxo6grd",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmur7u8ne001g0am0sjjxblnn",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxeftw001h0aq857ny31ia",
+      "monthlyTargetId": "cmupzwqk40001l604nuxo6grd",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmur7u8ne001h0am0kbj0esrs",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxegih001k0aq823uvl1p6",
+      "monthlyTargetId": "cmupzwqk40001l604nuxo6grd",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmur7u8ne001i0am0vv2fhbie",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxeh71001n0aq8t71v2lo4",
+      "monthlyTargetId": "cmupzwqk40001l604nuxo6grd",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmur7u8ne001j0am0j3brewdd",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxehvm001q0aq8qbbhchd9",
+      "monthlyTargetId": "cmupzwqk40001l604nuxo6grd",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmur7u8ne001k0am0v1ep96gr",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxeik8001t0aq8yrqqniip",
+      "monthlyTargetId": "cmupzwqk40001l604nuxo6grd",
+      "mode": "AUTO",
+      "amount": "0"
+    },
+    {
+      "id": "cmur7u8ne001l0am0wt4lncma",
+      "year": "2026",
+      "month": "10",
+      "employeeId": "cmupxej8q001w0aq83ft3m9rw",
+      "monthlyTargetId": "cmupzwqk40001l604nuxo6grd",
+      "mode": "AUTO",
+      "amount": "0"
+    }
+  ],
+  "warrantyTargets": [
+    {
+      "id": "cmuq2lzzq00060a34sycaixar",
+      "year": "2026",
+      "month": "10",
+      "amount": "0"
+    }
+  ],
+  "employeeWarrantyTargets": [],
+  "agencyTargets": [
+    {
+      "id": "cmuq1nesu0000l5041ytg9bji",
+      "year": "2026",
+      "month": "10",
+      "amount": "0"
+    }
+  ],
+  "employeeAgencyTargets": [],
+  "monthLocks": []
+}

@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "db:seed": "tsx prisma/seed.ts",
+    "db:backup": "node scripts/db-backup.mjs",
+    "db:restore": "node scripts/db-restore.mjs",
     "check:setup": "node scripts/check-setup.mjs",
     "postinstall": "prisma generate",
     "cap:sync": "npx cap sync android",
