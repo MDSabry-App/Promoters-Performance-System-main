@@ -92,13 +92,12 @@ html[data-theme="dark"] .employee-card.split{border-color:color-mix(in srgb,var(
 .invoice-list .empty{grid-column:1/-1}
 /* Position of the promoter inside their department, next to the department tag. */
 .rank-badge{display:inline-block;margin-inline-start:7px;padding:1px 7px;border-radius:999px;background:var(--soft);color:var(--accent);font-size:11px;font-weight:800}
-/* Sales / Achievement ordering switch in the Promoter Performance header. */
-.sort-toggle{display:inline-flex;gap:4px;padding:3px;border:1px solid var(--border);border-radius:999px;background:var(--surface2)}
-.sort-toggle button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:999px;cursor:pointer}
-.sort-toggle button:hover{color:var(--text)}
-/* Matches the other tab groups (.dept-target-tabs / .inv-source-tabs), which use
-   --primary so the label stays readable in dark mode where --accent is light. */
-.sort-toggle button.active{background:var(--primary);color:#fff}
+/* Colour theme: small circles instead of a wide select, to save header space. */
+.palette-swatches{display:inline-flex;align-items:center;gap:6px}
+.palette-swatches .swatch{width:19px;height:19px;border-radius:50%;border:2px solid transparent;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);cursor:pointer;padding:0;transition:transform .12s,box-shadow .12s}
+.palette-swatches .swatch:hover{transform:scale(1.14)}
+.palette-swatches .swatch.active{border-color:var(--text);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12),0 0 0 2px var(--surface)}
+.palette-swatches .swatch:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* Recycle bin: soft-deleted invoices stay visible but visually muted until restored. */
 .invoice-recycle{border-top:1px dashed var(--border);margin-top:4px;padding-top:13px}
 .recycle-toggle{display:inline-flex;align-items:center;gap:7px;margin:0 19px 0;background:none;border:0;color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;padding:4px 0}
@@ -314,14 +313,12 @@ html[data-theme="dark"]{--colside:#0a182b}
 .toast-x:hover{color:var(--text);background:var(--soft)}
 @keyframes toast-in{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
 @media(max-width:700px){.toast-stack{right:10px;left:10px;bottom:calc(10px + env(safe-area-inset-bottom));width:auto}}
-.install-btn{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,var(--border))}
 .push-on{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,var(--border));background:color-mix(in srgb,var(--good) 10%,var(--soft))}
 .inv-source{display:grid;gap:6px;font-size:13px;font-weight:650}
 .inv-source>span{color:var(--muted)}
 .inv-source-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .inv-source-tabs button{display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--border);background:var(--soft);color:var(--text);border-radius:10px;padding:10px;font-weight:750;cursor:pointer}
 .inv-source-tabs button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-.install-btn:hover{background:color-mix(in srgb,var(--accent) 12%,var(--soft))}
 main{padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right));padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 @media(max-width:700px){main{padding-left:max(13px,env(safe-area-inset-left));padding-right:max(13px,env(safe-area-inset-right));padding-top:calc(13px + env(safe-area-inset-top))}.tabs button{flex:1 1 auto;text-align:center}.primary,.secondary{padding:12px 13px}.stuff-row{padding:11px 12px}}
 @media(hover:none){.tabs button{padding:12px 16px}.primary,.secondary{min-height:46px}.dept-target-tabs button{min-height:44px}.target-list label.manual-row input{padding:11px 10px;font-size:16px}}
